@@ -9,7 +9,7 @@ class Reflector
 {
 public:
 	/** Construcor **/
-	Reflector();
+	Reflector() { }
  	
  	char translate(char c);
  	

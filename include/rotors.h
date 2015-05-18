@@ -12,8 +12,9 @@
 class Rotor
 {
 public:
-	/** Construcor **/
+	/** Construcors **/
 	Rotor(char pos);
+	Rotor() { Rotor(0); }
 	
  	bool advance();
  	
@@ -124,5 +125,6 @@ class Rotor5 : public Rotor
 	}
 };
 
+void rotorFactory(int rotorNum, int pos, Rotor* dst);
 
 #endif

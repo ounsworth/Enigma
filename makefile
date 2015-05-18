@@ -38,13 +38,13 @@ rm       = rm -f
 test: $(BINDIR)/test
 
 $(BINDIR)/test: $(OBJECTS) $(SRCDIR)/test.cpp
-	$(CC) $(CFLAGS) $(SRCDIR)/test.cpp -o $@$(OBJECTS)
+	$(CC) $(CFLAGS) $(SRCDIR)/test.cpp -o $@ $(OBJECTS)
 	@echo "Linking complete!"
 	
-#test_rotors: $(BINDIR)/test_rotors
+test_rotors: $(BINDIR)/test_rotors
 
-test_rotors: $(OBJECTS) $(SRCDIR)/test_rotors.cpp
-	$(CC) $(CFLAGS) $(SRCDIR)/test_rotors.cpp -o $(BINDIR)/$@ $(OBJECTS)
+$(BINDIR)/test_rotors: $(OBJECTS) $(SRCDIR)/test_rotors.cpp
+	$(CC) $(CFLAGS) $(SRCDIR)/test_rotors.cpp -o $@ $(OBJECTS)
 	@echo "Linking complete!"
 
 #$(BINDIR)/$(TARGET): $(OBJECTS)
