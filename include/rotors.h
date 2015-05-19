@@ -16,10 +16,12 @@ public:
 	Rotor(char pos);
 	Rotor() { Rotor(0); }
 	
- 	bool advance();
+ 	void advance();
  	
  	char translate(char c);	 	
  	char inv_translate(char c);
+ 	
+ 	bool nextCanAdvance();
  	
  	// should I also have translate(char* str) ?
  	
@@ -40,38 +42,60 @@ II    = AJDKSIRUXBLHWTMCQGZNPYFVOE
 III   = BDFHJLCPRTXVZNYEIWGAKMUSQO
 IV    = ESOVPZJAYQUIRHXLNFTGKDCMWB
 V     = VZBRGITYUPSDNHLXAWMJQOFECK
+
+Additional rotors used by Kriegsmarine M3 and M4 only:
+Entry = ABCDEFGHIJKLMNOPQRSTUVWXYZ (rotor right side)   
+        ||||||||||||||||||||||||||
+VI    = JPGVOUMFYQBENHZRDKASXLICTW
+VII   = NZJHGRCXMYSWBOUFAIVLPEKQDT
+VIII  = FKQHTLXOCBJSPDZRAMEWNIUYGV
+
+The special fourth rotors, also called Zusatzwalzen or Greek rotors. Used on the Kriegsmarine M4 with thin reflectors only:
+Entry = ABCDEFGHIJKLMNOPQRSTUVWXYZ (rotor right side)   
+        ||||||||||||||||||||||||||
+Beta  = LEYJVCNIXWPBQMDRTAKZGFUHOS
+Gamma = FSOKANUERHMBTIYCWLQPZXVGJD
+
+
+Rotor					Next left rotor steps when rotor steps from->to
+I							Q -> R
+II						E -> F
+III						V -> W
+IV						J -> K
+V							Z -> A
+VI VII VIII 	Z -> A and M -> N
 */ 
 
 
 /**
- * Rotor 1 of the Wehrmacht Enigma machine
+ * Rotor I of the Wehrmacht Enigma machine
  */
-class Rotor1 : public Rotor
+class RotorI : public Rotor
 {
-	public:
-		bool advance();
-		
+	public:		
 		/** Constructor */
-		Rotor1(char pos) : Rotor(pos) {
+		RotorI(char pos) : Rotor(pos) {
 			strcpy(transitionTable,    "EKMFLGDQVZNTOWYHXUSPAIBRCJ");
 			strcpy(inv_transitionTable,"UWYGADFPVZBECKMTHXSLRINQOJ");
 		}
+		
+	 	bool nextCanAdvance();
 };
 
 
 /**
  * Rotor II of the Wehrmacht Enigma machine
  */
-class Rotor2 : public Rotor
+class RotorII : public Rotor
 {
 	public:
-		bool advance();
-		
 		/** Constructor */
-		Rotor2(char pos) : Rotor(pos) {
+		RotorII(char pos) : Rotor(pos) {
 			strcpy(transitionTable, 		"AJDKSIRUXBLHWTMCQGZNPYFVOE");
 			strcpy(inv_transitionTable, "AJPCZWRLFBDKOTYUQGENHXMIVS");
 		}
+		
+	 	bool nextCanAdvance();
 
 };
 
@@ -79,16 +103,16 @@ class Rotor2 : public Rotor
 /**
  * Rotor III of the Wehrmacht Enigma machine
  */
-class Rotor3 : public Rotor
+class RotorIII : public Rotor
 {
 	public:
-		bool advance();
-
 		/** Constructor */
-		Rotor3(char pos) : Rotor(pos) {
+		RotorIII(char pos) : Rotor(pos) {
 			strcpy(transitionTable, 		"BDFHJLCPRTXVZNYEIWGAKMUSQO");	
 			strcpy(inv_transitionTable, "TAGBPCSDQEUFVNZHYIXJWLRKOM");
 		}
+		
+	 	bool nextCanAdvance();
 
 };
 
@@ -96,16 +120,16 @@ class Rotor3 : public Rotor
 /**
  * Rotor IV of the Wehrmacht Enigma machine
  */
-class Rotor4 : public Rotor
+class RotorIV : public Rotor
 {
 	public:
-		bool advance();
-
-	/** Constructor */
-	Rotor4(char pos) : Rotor(pos) {
-		strcpy(transitionTable, 		"ESOVPZJAYQUIRHXLNFTGKDCMWB");
-		strcpy(inv_transitionTable, "HZWVARTNLGUPXQCEJMBSKDYOIF");
-	}
+		/** Constructor */
+		RotorIV(char pos) : Rotor(pos) {
+			strcpy(transitionTable, 		"ESOVPZJAYQUIRHXLNFTGKDCMWB");
+			strcpy(inv_transitionTable, "HZWVARTNLGUPXQCEJMBSKDYOIF");
+		}
+		
+	 	bool nextCanAdvance();
 
 };
 
@@ -113,18 +137,99 @@ class Rotor4 : public Rotor
 /**
  * Rotor V of the Wehrmacht Enigma machine
  */
-class Rotor5 : public Rotor
+class RotorV : public Rotor
 {
 	public:
-		bool advance();
-
-	/** Constructor */
-	Rotor5(char pos) : Rotor(pos) {
-		strcpy(transitionTable, 		"VZBRGITYUPSDNHLXAWMJQOFECK");
-		strcpy(inv_transitionTable, "QCYLXWENFTZOSMVJUDKGIARPHB");
-	}
+		/** Constructor */
+		RotorV(char pos) : Rotor(pos) {
+			strcpy(transitionTable, 		"VZBRGITYUPSDNHLXAWMJQOFECK");
+			strcpy(inv_transitionTable, "QCYLXWENFTZOSMVJUDKGIARPHB");
+		}
+		
+	 	bool nextCanAdvance();
 };
 
-void rotorFactory(int rotorNum, int pos, Rotor* dst);
+
+/**
+ * Rotor VI used by Kriegsmarine M3 and M4 Enigma machines only
+ */
+class RotorVI : public Rotor
+{
+	public:
+		/** Constructor */
+		RotorVI(char pos) : Rotor(pos) {
+			strcpy(transitionTable, 		"JPGVOUMFYQBENHZRDKASXLICTW");
+			strcpy(inv_transitionTable, "SKXQLHCNWARVGMEBJPTYFDZUIO");
+		}
+		
+	 	bool nextCanAdvance();
+};
+
+
+/**
+ * Rotor VII used by Kriegsmarine M3 and M4 Enigma machines only
+ */
+class RotorVII : public Rotor
+{
+	public:
+		/** Constructor */
+		RotorVII(char pos) : Rotor(pos) {
+			strcpy(transitionTable, 		"NZJHGRCXMYSWBOUFAIVLPEKQDT");
+			strcpy(inv_transitionTable, "QMGYVPEDRCWTIANUXFKZOSLHJB");
+		}
+		
+	 	bool nextCanAdvance();
+};
+
+
+/**
+ * Rotor VIII used by Kriegsmarine M3 and M4 Enigma machines only
+ */
+class RotorVIII : public Rotor
+{
+	public:
+		/** Constructor */
+		RotorVIII(char pos) : Rotor(pos) {
+			strcpy(transitionTable, 		"FKQHTLXOCBJSPDZRAMEWNIUYGV");
+			strcpy(inv_transitionTable, "QJINSAYDVKBFRUHMCPLEWZTGXO");
+		}
+		
+	 	bool nextCanAdvance();
+};
+
+
+/**
+ * Rotor Beta used by Kriegsmarine M4 machine with thin reflectors only
+ */
+class RotorBeta : public Rotor
+{
+	public:
+		/** Constructor */
+		RotorBeta(char pos) : Rotor(pos) {
+			strcpy(transitionTable, 		"LEYJVCNIXWPBQMDRTAKZGFUHOS");
+			strcpy(inv_transitionTable, "RLFOBVUXHDSANGYKMPZQWEJICT");
+		}
+		
+	 	bool nextCanAdvance();
+};
+
+
+/**
+ * Rotor Gamma used by Kriegsmarine M4 machine with thin reflectors only
+ */
+class RotorGamma : public Rotor
+{
+	public:
+		/** Constructor */
+		RotorGamma(char pos) : Rotor(pos) {
+			strcpy(transitionTable, 		"FSOKANUERHMBTIYCWLQPZXVGJD");
+			strcpy(inv_transitionTable, "ELPZHAXJNYDRKFCTSIBMGWQVOU");
+		}
+		
+	 	bool nextCanAdvance();
+};
+
+
+void rotorFactory(char rotorNum, int pos, Rotor* dst);
 
 #endif

@@ -27,7 +27,7 @@ CFLAGS   = -std=c++11 -Wall -I $(INCDIR)
 
 LINKER   = gcc -o
 # linking flags here
-LFLAGS   = -I. -lm
+LFLAGS   = -I. -lm -lstdc++
 
 SOURCES  := $(wildcard $(SRCDIR)/*.cpp)
 LIBS		 := $(wildcard $(LIBDIR)/*.cpp)
@@ -38,13 +38,13 @@ rm       = rm -f
 test: $(BINDIR)/test
 
 $(BINDIR)/test: $(OBJECTS) $(SRCDIR)/test.cpp
-	$(CC) $(CFLAGS) $(SRCDIR)/test.cpp -o $@ $(OBJECTS)
+	$(CC) $(CFLAGS) $(SRCDIR)/test.cpp -o $@ $(OBJECTS) $(LFLAGS)
 	@echo "Linking complete!"
 	
 test_rotors: $(BINDIR)/test_rotors
 
 $(BINDIR)/test_rotors: $(OBJECTS) $(SRCDIR)/test_rotors.cpp
-	$(CC) $(CFLAGS) $(SRCDIR)/test_rotors.cpp -o $@ $(OBJECTS)
+	$(CC) $(CFLAGS) $(SRCDIR)/test_rotors.cpp -o $@ $(OBJECTS) $(LFLAGS)
 	@echo "Linking complete!"
 
 #$(BINDIR)/$(TARGET): $(OBJECTS)

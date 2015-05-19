@@ -5,15 +5,16 @@
 #include "rotors.h"
 #include "reflectors.h"
 
-
+#ifndef ALPHABET
 #define ALPHABET "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+#endif
 
 
 void testOneChar(char c) {
 	printf("Translating \'%c\' :\n",c);
 	
 	printf("\nRotor I:\n");
-	Rotor3 rotor(0);
+	RotorI rotor(0);
 	
 	c = rotor.translate(c);
 	printf("rotor.translate(c) = %c\n",c);
@@ -32,7 +33,7 @@ int main(int argc, char *argv[]) {
 		
 	printf("Testing the translation functions for typos, \"ABC..Z\"-> rotorX -> inv_rotorX =? \"ABC..Z\"\n");
 
-	Rotor rotors[5];
+	Rotor rotors[10];
 
 	// Rotor I
 	printf("\nRotor I:\n");
@@ -108,7 +109,7 @@ int main(int argc, char *argv[]) {
 	
 	
 	// Rotor V
-	printf("\nRotor IV:\n");
+	printf("\nRotor V:\n");
 	rotorFactory(5, 0, &rotors[4]);
 	strcpy(alpha, ALPHABET);
 	
@@ -125,10 +126,101 @@ int main(int argc, char *argv[]) {
 	}
 	
 	
+	// Rotor VI
+	printf("\nRotor VI:\n");
+	rotorFactory(6, 0, &rotors[5]);
+	strcpy(alpha, ALPHABET);
 	
-	// Test the full rotor sequence 12345A
-	printf("\nThe full rotor sequence 12345A\n");
-	Reflector reflector = ReflectorAlpha();
+	for(i=0; i<26; i++) {
+		alpha[i] = rotors[5].translate(alpha[i]);
+		alpha[i] = rotors[5].inv_translate(alpha[i]);
+	}
+	if( strcmp(alpha, ALPHABET) == 0 )
+		printf("No Errors!\n");
+	else {
+		printf("There's a mistake somewhere.\n");
+		printf("Input:  %s\n", ALPHABET);
+		printf("Output: %s\n", alpha);
+	}
+	
+	
+	// Rotor VII
+	printf("\nRotor VII:\n");
+	rotorFactory(7, 0, &rotors[6]);
+	strcpy(alpha, ALPHABET);
+	
+	for(i=0; i<26; i++) {
+		alpha[i] = rotors[6].translate(alpha[i]);
+		alpha[i] = rotors[6].inv_translate(alpha[i]);
+	}
+	if( strcmp(alpha, ALPHABET) == 0 )
+		printf("No Errors!\n");
+	else {
+		printf("There's a mistake somewhere.\n");
+		printf("Input:  %s\n", ALPHABET);
+		printf("Output: %s\n", alpha);
+	}
+	
+	
+	// Rotor VIII
+	printf("\nRotor VIII:\n");
+	rotorFactory(8, 0, &rotors[7]);
+	strcpy(alpha, ALPHABET);
+	
+	for(i=0; i<26; i++) {
+		alpha[i] = rotors[7].translate(alpha[i]);
+		alpha[i] = rotors[7].inv_translate(alpha[i]);
+	}
+	if( strcmp(alpha, ALPHABET) == 0 )
+		printf("No Errors!\n");
+	else {
+		printf("There's a mistake somewhere.\n");
+		printf("Input:  %s\n", ALPHABET);
+		printf("Output: %s\n", alpha);
+	}
+	
+	
+	// Rotor Beta
+	printf("\nRotor Beta:\n");
+	rotorFactory('B', 0, &rotors[8]);
+	strcpy(alpha, ALPHABET);
+	
+	for(i=0; i<26; i++) {
+		alpha[i] = rotors[8].translate(alpha[i]);
+		alpha[i] = rotors[8].inv_translate(alpha[i]);
+	}
+	if( strcmp(alpha, ALPHABET) == 0 )
+		printf("No Errors!\n");
+	else {
+		printf("There's a mistake somewhere.\n");
+		printf("Input:  %s\n", ALPHABET);
+		printf("Output: %s\n", alpha);
+	}
+	
+	
+	// Rotor Gamma
+	printf("\nRotor Gamma:\n");
+	rotorFactory('G', 0, &rotors[9]);
+	strcpy(alpha, ALPHABET);
+	
+	for(i=0; i<26; i++) {
+		alpha[i] = rotors[9].translate(alpha[i]);
+		alpha[i] = rotors[9].inv_translate(alpha[i]);
+	}
+	if( strcmp(alpha, ALPHABET) == 0 )
+		printf("No Errors!\n");
+	else {
+		printf("There's a mistake somewhere.\n");
+		printf("Input:  %s\n", ALPHABET);
+		printf("Output: %s\n", alpha);
+	}
+	
+	
+	
+	
+	// Test the full rotor sequence 12345B
+	printf("\nThe full rotor sequence 1234B\n");
+	Reflector reflector = ReflectorB();
 	strcpy(alpha, ALPHABET);
 	
 	int rot;

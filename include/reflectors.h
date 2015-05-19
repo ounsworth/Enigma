@@ -23,15 +23,21 @@ Contacts    = ABCDEFGHIJKLMNOPQRSTUVWXYZ
               ||||||||||||||||||||||||||
 Reflector B = YRUHQSLDPXNGOKMIEBFZCWVJAT
 Reflector C = FVPJIAOYEDRZXWGCTKUQSBNMHL
+
+
+Contacts         = ABCDEFGHIJKLMNOPQRSTUVWXYZ           
+                   ||||||||||||||||||||||||||
+Reflector B Thin = ENKQAUYWJICOPBLMDXZVFTHRGS
+Reflector C Thin = RDOBJNTKVEHMLFCWZAXGYIPSUQ
 */
 
 /**
  * Reflector Alpha of the Wehrmacht Enigma machine
  */
-class ReflectorAlpha : public Reflector
+class ReflectorB : public Reflector
 {
 	public:
-		ReflectorAlpha() {
+		ReflectorB() {
 			strcpy(transitionTable, "YRUHQSLDPXNGOKMIEBFZCWVJAT");
 		}
 };
@@ -40,14 +46,37 @@ class ReflectorAlpha : public Reflector
 /**
  * Reflector Beta of the Wehrmacht Enigma machine
  */
-class ReflectorBeta : public Reflector
+class ReflectorC : public Reflector
 {
 	public:
-		ReflectorBeta() {
+		ReflectorC() {
 			strcpy(transitionTable, "FVPJIAOYEDRZXWGCTKUQSBNMHL");
 		}
 };
 
+
+/**
+ * Reflector Beta of the Thin reflectors, Kriegsmarine M4 only Enigma machine
+ */
+class ReflectorBThin : public Reflector
+{
+	public:
+		ReflectorBThin() {
+			strcpy(transitionTable, "ENKQAUYWJICOPBLMDXZVFTHRGS");
+		}
+};
+
+
+/**
+ * Reflector Beta of the Thin reflectors, Kriegsmarine M4 only Enigma machine
+ */
+class ReflectorCThin : public Reflector
+{
+	public:
+		ReflectorCThin() {
+			strcpy(transitionTable, "RDOBJNTKVEHMLFCWZAXGYIPSUQ");
+		}
+};
 
 
 #endif
