@@ -6,6 +6,11 @@
 #include "enigma_utils.h"
 
 
+#ifndef ALPHABET
+#define ALPHABET "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+#endif
+
+
 /**
  * Abstract class for an Enigma Rotor
  */
@@ -66,6 +71,24 @@ V							Z -> A
 VI VII VIII 	Z -> A and M -> N
 */ 
 
+/**
+ * The Null Rotor always returns the input character.
+ * It is used as the default rotor if no configuration is specified, and as the 4th rotor in a 3-rotor configuration.
+ */
+class NullRotor : public Rotor
+{
+	public:		
+		/** Constructor */
+		NullRotor(char pos) : Rotor(pos) {
+			m_pos = 0;
+			strcpy(transitionTable,     ALPHABET);
+			strcpy(inv_transitionTable, ALPHABET);
+		}
+	
+		void advance() { }
+	 	bool nextCanAdvance() { return false; }
+
+};
 
 /**
  * Rotor I of the Wehrmacht Enigma machine

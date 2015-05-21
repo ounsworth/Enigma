@@ -5,6 +5,10 @@
 
 #include "enigma_utils.h"
 
+#ifndef ALPHABET
+#define ALPHABET "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+#endif
+
 class Reflector
 {
 public:
@@ -30,6 +34,18 @@ Contacts         = ABCDEFGHIJKLMNOPQRSTUVWXYZ
 Reflector B Thin = ENKQAUYWJICOPBLMDXZVFTHRGS
 Reflector C Thin = RDOBJNTKVEHMLFCWZAXGYIPSUQ
 */
+
+/**
+ * The Null Reflector always returns the input character.
+ * It is used as the default reflector if no configuration is specified
+ */
+class NullReflector : public Reflector
+{
+	public:
+		NullReflector() {
+			strcpy(transitionTable, ALPHABET);
+		}
+};
 
 /**
  * Reflector Alpha of the Wehrmacht Enigma machine

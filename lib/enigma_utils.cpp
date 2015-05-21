@@ -5,9 +5,6 @@
 
 char cleanChar(char c)
 {
-
-//printf("DEBUG:: cleanChar()\n");
-
 	if (c == '\0') return c;
 	
 	c = toupper(c);

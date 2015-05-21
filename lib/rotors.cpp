@@ -1,4 +1,6 @@
 
+#include <stdio.h>
+
 #include "rotors.h"
 
 
@@ -31,6 +33,11 @@ char Rotor::inv_translate(char c)
 	return (((inv_transitionTable[c-'A']-'A')-m_pos+26) % 26) + 'A';
 }
 
+bool Rotor::nextCanAdvance()
+{
+	printf("Error: Rotor::nextCanAdvance() should never be called.\n");
+	return false;
+}
 
 bool RotorI::nextCanAdvance()
 {
