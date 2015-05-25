@@ -2,6 +2,7 @@
 #define ENIGMA_ENIGMA_MACHINE_H
 
 #include <stdexcept>
+#include <stdio.h>
 
 #include "rotors.h"
 #include "reflectors.h"
@@ -25,6 +26,7 @@ class WehrmachtMachine
 	public:
 		/** Constructors */
 		WehrmachtMachine();
+		~WehrmachtMachine();
 		
 		/**
 		 * @param rototConfig - a string from the user indicating the types and order of rotors to install
@@ -41,11 +43,12 @@ class WehrmachtMachine
 
 		void resetPlugboard();
 		void setPlugboardPair(char p1, char p2);
-
+		void printPlugboard() { printf("Plugboard: %s\n", m_plugboard); }
+		
 	private:
+		char m_plugboard[27];
 		Rotor m_rotors[4];
 		Reflector m_reflector;
-		char m_plugboard[27];
 };
 
  

@@ -12,6 +12,11 @@ WehrmachtMachine::WehrmachtMachine()
 	WehrmachtMachine("NNNN", "AAA");
 }
 
+
+WehrmachtMachine::~WehrmachtMachine() {
+	
+}
+
 /** Constructor **/
 WehrmachtMachine::WehrmachtMachine(const char* rotorConfig, const char* initVector)
 {	
@@ -138,6 +143,8 @@ void WehrmachtMachine::resetPlugboard()
 //TODO: write some test cases for this!
 void WehrmachtMachine::setPlugboardPair(char p1, char p2)
 {
+	p1 = toupper(p1);
+	p2 = toupper(p2);
 	if (p1 < 'A' || p1 > 'Z' || p2 < 'A' || p2 > 'Z')
 		return;
 

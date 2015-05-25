@@ -35,6 +35,12 @@ INCLUDES := $(wildcard $(INCDIR)/*.h)
 OBJECTS  := $(LIBS:$(LIBDIR)/%.cpp=$(OBJDIR)/%.o)
 rm       = rm -f
 
+enigma: $(BINDIR)/enigma
+
+$(BINDIR)/enigma: $(OBJECTS) $(SRCDIR)/enigma.cpp
+	$(CC) $(CFLAGS) $(SRCDIR)/enigma.cpp -o $@ $(OBJECTS) $(LFLAGS)
+	@echo "Linking complete!"
+
 test: $(BINDIR)/test
 
 $(BINDIR)/test: $(OBJECTS) $(SRCDIR)/test.cpp
