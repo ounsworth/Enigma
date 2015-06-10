@@ -37,19 +37,19 @@ rm       = rm -f
 
 enigma: $(BINDIR)/enigma
 
-$(BINDIR)/enigma: $(OBJECTS) $(SRCDIR)/enigma.cpp
+$(BINDIR)/enigma: $(OBJECTS) $(SRCDIR)/enigma.cpp $(INCLUDES)
 	$(CC) $(CFLAGS) $(SRCDIR)/enigma.cpp -o $@ $(OBJECTS) $(LFLAGS)
 	@echo "Linking complete!"
 
 test: $(BINDIR)/test
 
-$(BINDIR)/test: $(OBJECTS) $(SRCDIR)/test.cpp
+$(BINDIR)/test: $(OBJECTS) $(SRCDIR)/test.cpp $(INCLUDES)
 	$(CC) $(CFLAGS) $(SRCDIR)/test.cpp -o $@ $(OBJECTS) $(LFLAGS)
 	@echo "Linking complete!"
 	
 test_rotors: $(BINDIR)/test_rotors
 
-$(BINDIR)/test_rotors: $(OBJECTS) $(SRCDIR)/test_rotors.cpp
+$(BINDIR)/test_rotors: $(OBJECTS) $(SRCDIR)/test_rotors.cpp $(INCLUDES)
 	$(CC) $(CFLAGS) $(SRCDIR)/test_rotors.cpp -o $@ $(OBJECTS) $(LFLAGS)
 	@echo "Linking complete!"
 

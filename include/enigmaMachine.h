@@ -23,6 +23,12 @@
 class WehrmachtMachine
 {
 
+	private:
+		char* m_plugboard;
+		Rotor m_rotors[4];
+		Reflector m_reflector;
+		
+
 	public:
 		/** Constructors */
 		WehrmachtMachine();
@@ -34,21 +40,21 @@ class WehrmachtMachine
 		 * @throws ENIGMA_INVALID_ROTOR_CONFIG_ERROR if the rotorConfig string is invalid
 		 * @throws ENIGMA_INVALID_INIT_VECTOR_ERROR if the initVector is invalid
 		 */
+		WehrmachtMachine(const char* rotorConfig, const char* initVector, const char* plugboard);
+		
 		WehrmachtMachine(const char* rotorConfig, const char* initVector);
-
-		//static bool validateRotorConfigStr(const char* rotorConfig);
-		//static bool validateInitVector(const char* initVector);
+		
+		void init(const char* rotorConfig, const char* initVector, const char* plugboard);
+		void init(const char* rotorConfig, const char* initVector);
 
 		void advance();
+		char translate(char c);
 
 		void resetPlugboard();
 		void setPlugboardPair(char p1, char p2);
 		void printPlugboard() { printf("Plugboard: %s\n", m_plugboard); }
-		
-	private:
-		char m_plugboard[27];
-		Rotor m_rotors[4];
-		Reflector m_reflector;
+		void setRotors(const char* rotorConfig);
+		void setInitVector(const char* initVector);
 };
 
  

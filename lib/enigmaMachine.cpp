@@ -9,19 +9,34 @@ WehrmachtMachine::WehrmachtMachine()
 {
 	// instead, create a "neutral rotor" which maps evrey letter to itself by overriding translate() and inv_translate() to { return c; }
 	// and make that the default.
-	WehrmachtMachine("NNNN", "AAA");
+	WehrmachtMachine("NNNN", "AAA", ALPHABET);
 }
 
 
 WehrmachtMachine::~WehrmachtMachine() {
-	
+	delete[] m_plugboard;
+}
+
+WehrmachtMachine::WehrmachtMachine(const char* rotorConfig, const char* initVector)
+{
+	WehrmachtMachine(rotorConfig, initVector, ALPHABET);
 }
 
 /** Constructor **/
-WehrmachtMachine::WehrmachtMachine(const char* rotorConfig, const char* initVector)
-{	
-	resetPlugboard();
+WehrmachtMachine::WehrmachtMachine(const char* rotorConfig, const char* initVector, const char* plugboard)
+{
+	init(rotorConfig, initVector, plugboard);
+}
 
+void WehrmachtMachine::init(const char* rotorConfig, const char* initVector)
+{
+	init(rotorConfig, initVector, ALPHABET);
+}
+
+void WehrmachtMachine::init(const char* rotorConfig, const char* initVector, const char* plugboard)
+{	
+	m_plugboard = new char[27];
+	strcpy(m_plugboard, plugboard);
 	// parse both user input strings, and create the Rotor and Reflector objects	
 	char pos;
 	int i;
@@ -35,28 +50,28 @@ WehrmachtMachine::WehrmachtMachine(const char* rotorConfig, const char* initVect
 	
 		// parse the rotorConfig string and construct the Rotor objects
 		switch(rotorConfig[i]) {
-		case 1:
+		case '1':
 			m_rotors[i] = RotorI(pos);
 			break;
-		case 2:
+		case '2':
 			m_rotors[i] = RotorII(pos);
 			break;
-		case 3:
+		case '3':
 			m_rotors[i] = RotorIII(pos);
 			break;
-		case 4:
+		case '4':
 			m_rotors[i] = RotorIV(pos);
 			break;
-		case 5:
+		case '5':
 			m_rotors[i] = RotorV(pos);
 			break;
-		case 6:
+		case '6':
 			m_rotors[i] = RotorVI(pos);
 			break;
-		case 7:
+		case '7':
 			m_rotors[i] = RotorVII(pos);
 			break;
-		case 8:
+		case '8':
 			m_rotors[i] = RotorVIII(pos);
 			break;
 		case 'N':
@@ -112,6 +127,9 @@ WehrmachtMachine::WehrmachtMachine(const char* rotorConfig, const char* initVect
 	default:
 		throw ENIGMA_INVALID_ROTOR_CONFIG_ERROR;		
 	}
+	#ifdef DEBUG
+	printPlugboard();
+	#endif
 }
 
 
@@ -119,7 +137,7 @@ void WehrmachtMachine::advance()
 {	
 	// the 1st rotor always advances
 	m_rotors[0].advance();
-	
+		
 	if( m_rotors[0].nextCanAdvance() )
 		m_rotors[1].advance();
 		
@@ -135,9 +153,27 @@ void WehrmachtMachine::advance()
 	// They never made a proper 4-rotor model of the Wehrmacht machine, it was just a field-rigged 3-rotor model.
 }
 
+char WehrmachtMachine::translate(char c)
+{
+	int rot;
+	for(rot=0; rot<4; rot++) {
+			c = m_rotors[rot].translate(c);
+	}	
+	// reflect and go back
+	c = m_reflector.translate(c);
+	
+	for(rot=4; rot>=0; rot--) {
+			c = m_rotors[rot].inv_translate(c);
+	}
+	
+	return c;
+}
+
 void WehrmachtMachine::resetPlugboard()
 {
+	printf("resetPlugboard() 1\n");
 	strcpy(m_plugboard, ALPHABET);
+	printf("resetPlugboard() 2\n");
 }
 
 //TODO: write some test cases for this!
@@ -158,3 +194,5 @@ void WehrmachtMachine::setPlugboardPair(char p1, char p2)
 	m_plugboard[p1-'A'] = p2;
 	m_plugboard[p2-'A'] = p1;
 }
+
+
