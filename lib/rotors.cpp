@@ -15,11 +15,19 @@ Rotor::Rotor(char pos)
 void Rotor::advance() 
 { 
 	m_pos = (m_pos+1) % 26;
+	#ifdef DEBUG
+	printf("Rotor::advance() to pos %d\n", m_pos);
+	#endif
 }
 
 char Rotor::translate(char c)
 {
 	c = cleanChar(c);
+	
+	#ifdef DEBUG
+	printf("Rotor::translate() %c\n", c);
+	#endif
+	
 	if (c == '-') return '-';
 	return transitionTable[(c-'A'+m_pos) % 26];
 }
@@ -35,7 +43,7 @@ char Rotor::inv_translate(char c)
 
 bool Rotor::nextCanAdvance()
 {
-	printf("Error: Rotor::nextCanAdvance() should never be called.\n");
+	fprintf(stderr, "Error: Rotor::nextCanAdvance() should never be called.\n");
 	return false;
 }
 
@@ -79,7 +87,15 @@ bool RotorVIII::nextCanAdvance()
 	return m_pos == ('Z'-'A') || m_pos == ('M'-'A');
 }
 
+bool RotorBeta::nextCanAdvance()
+{
+	return true;	// irrelevant since this is always the last rotor
+}
 
+bool RotorGamma::nextCanAdvance()
+{
+	return true;	// irrelevant since this is always the last rotor
+}
 
 
 

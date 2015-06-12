@@ -15,6 +15,9 @@ WehrmachtMachine::WehrmachtMachine()
 
 WehrmachtMachine::~WehrmachtMachine() {
 	delete[] m_plugboard;
+	
+	for(int i=0; i<4; i++)
+		delete m_rotors[i];
 }
 
 WehrmachtMachine::WehrmachtMachine(const char* rotorConfig, const char* initVector)
@@ -51,31 +54,58 @@ void WehrmachtMachine::init(const char* rotorConfig, const char* initVector, con
 		// parse the rotorConfig string and construct the Rotor objects
 		switch(rotorConfig[i]) {
 		case '1':
-			m_rotors[i] = RotorI(pos);
+			m_rotors[i] = new RotorI(pos);
+			#ifdef DEBUG 
+			printf("Adding RotorI(%d)\n",pos); 
+			#endif
 			break;
 		case '2':
-			m_rotors[i] = RotorII(pos);
+			m_rotors[i] = new RotorII(pos);
+			#ifdef DEBUG 
+			printf("Adding RotorII(%d)\n",pos); 
+			#endif
 			break;
 		case '3':
-			m_rotors[i] = RotorIII(pos);
+			m_rotors[i] = new RotorIII(pos);
+			#ifdef DEBUG 
+			printf("Adding RotorIII(%d)\n",pos); 
+			#endif
 			break;
 		case '4':
-			m_rotors[i] = RotorIV(pos);
+			m_rotors[i] = new RotorIV(pos);
+			#ifdef DEBUG 
+			printf("Adding RotorIV(%d)\n",pos); 
+			#endif
 			break;
 		case '5':
-			m_rotors[i] = RotorV(pos);
+			m_rotors[i] = new RotorV(pos);
+			#ifdef DEBUG 
+			printf("Adding RotorV(%d)\n",pos); 
+			#endif
 			break;
 		case '6':
-			m_rotors[i] = RotorVI(pos);
+			m_rotors[i] = new RotorVI(pos);
+			#ifdef DEBUG 
+			printf("Adding RotorVI(%d)\n",pos); 
+			#endif
 			break;
 		case '7':
-			m_rotors[i] = RotorVII(pos);
+			m_rotors[i] = new RotorVII(pos);
+			#ifdef DEBUG 
+			printf("Adding RotorVII(%d)\n",pos); 
+			#endif
 			break;
 		case '8':
-			m_rotors[i] = RotorVIII(pos);
+			m_rotors[i] = new RotorVIII(pos);
+			#ifdef DEBUG 
+			printf("Adding RotorVIII(%d)\n",pos); 
+			#endif
 			break;
 		case 'N':
-			m_rotors[i] = NullRotor(0);
+			m_rotors[i] = new NullRotor(0);
+			#ifdef DEBUG 
+			printf("Adding NullRotor(%d)\n",pos); 
+			#endif
 			break;
 		case '\0': 	// premature end-of-string (ie string too short)
 		default:
@@ -95,13 +125,13 @@ void WehrmachtMachine::init(const char* rotorConfig, const char* initVector, con
 	
 		switch( rotorConfig[3] ) {
 		case 'B':
-			m_rotors[3] = RotorBeta(pos);
+			m_rotors[3] = new RotorBeta(pos);
 			break;
 		case 'G':
-			m_rotors[3] = RotorGamma(pos);
+			m_rotors[3] = new RotorGamma(pos);
 			break;	
 		case 'N':
-			m_rotors[3] = NullRotor(0);
+			m_rotors[3] = new NullRotor(0);
 			break;
 		case '\0': 	// premature end-of-string (ie string too short)
 		default:
@@ -110,7 +140,7 @@ void WehrmachtMachine::init(const char* rotorConfig, const char* initVector, con
 	} else {
 		// In the 3-rotor configuration, we add a null rotor to fill out the array
 		// The is preferable to only having 3 in the array to prevent timing attacks
-		m_rotors[3] = NullRotor(0);
+		m_rotors[3] = new NullRotor(0);
 	}
 	
 	switch( rotorConfig[3] ) {
@@ -136,17 +166,17 @@ void WehrmachtMachine::init(const char* rotorConfig, const char* initVector, con
 void WehrmachtMachine::advance()
 {	
 	// the 1st rotor always advances
-	m_rotors[0].advance();
+	m_rotors[0]->advance();
 		
-	if( m_rotors[0].nextCanAdvance() )
-		m_rotors[1].advance();
+	if( m_rotors[0]->nextCanAdvance() )
+		m_rotors[1]->advance();
 		
-	if( m_rotors[1].nextCanAdvance() ) {
-		m_rotors[2].advance();
+	if( m_rotors[1]->nextCanAdvance() ) {
+		m_rotors[2]->advance();
 		
 		// the pawl of the 3rd rotor will catch on the notch of the 2nd rotor
 		// leading to the so-called "double-step" behaviour
-		m_rotors[1].advance();
+		m_rotors[1]->advance();
 	}
 	
 	// even if there are 4 rotors, only the first 3 rotate because there are only ever 3 pawls
@@ -157,23 +187,22 @@ char WehrmachtMachine::translate(char c)
 {
 	int rot;
 	for(rot=0; rot<4; rot++) {
-			c = m_rotors[rot].translate(c);
+			c = m_rotors[rot]->translate(c);
 	}	
+	
 	// reflect and go back
 	c = m_reflector.translate(c);
-	
-	for(rot=4; rot>=0; rot--) {
-			c = m_rotors[rot].inv_translate(c);
-	}
+
+	//~ for(rot=3; rot>=0; rot--) {
+			//~ c = m_rotors[rot]->inv_translate(c);
+	//~ }
 	
 	return c;
 }
 
 void WehrmachtMachine::resetPlugboard()
 {
-	printf("resetPlugboard() 1\n");
 	strcpy(m_plugboard, ALPHABET);
-	printf("resetPlugboard() 2\n");
 }
 
 //TODO: write some test cases for this!
@@ -194,5 +223,4 @@ void WehrmachtMachine::setPlugboardPair(char p1, char p2)
 	m_plugboard[p1-'A'] = p2;
 	m_plugboard[p2-'A'] = p1;
 }
-
 

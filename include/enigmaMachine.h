@@ -25,7 +25,7 @@ class WehrmachtMachine
 
 	private:
 		char* m_plugboard;
-		Rotor m_rotors[4];
+		Rotor* m_rotors[4];
 		Reflector m_reflector;
 		
 

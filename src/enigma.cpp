@@ -3,8 +3,6 @@
 
 #include "enigmaMachine.h"
 
-#define DEBUG
-
 #define helpStr "Usage:\n\n"\
 "enigma -r ###[A]B -iv AAA[A] [-p AB]*"\
 "\n\nEnigma takes its configuration via command-line parameters, and then encrypts/decrypts an input message on stdin, outputting the retult to stdout.\n\n"\
@@ -77,7 +75,6 @@ int main( int argc, const char* argv[] )
 	WehrmachtMachine machine;
 	try {
 		machine.init(rotorConfig, initVector);
-		printf("Done Constructor\n");
 	} catch (int e) {
 		if ( e == ENIGMA_INVALID_ROTOR_CONFIG_ERROR )
 			printf("ENIGMA_INVALID_ROTOR_CONFIG_ERROR: \"%s\"\n\n", rotorConfig);
@@ -86,9 +83,7 @@ int main( int argc, const char* argv[] )
 		
 		return 0;
 	}
-	printf("1\n");
 	machine.resetPlugboard();	// this _should_ be done in the contructor, but for some reason it seems neccessary to have here :S
-	printf("2\n");
 
 	// process command-line params
 	int i;
@@ -107,16 +102,23 @@ int main( int argc, const char* argv[] )
 	// stdin loop -- encrypt this and put it out to stdout
 	char c;
 	c = getchar();
-  while (c != EOF) {
-  	c = cleanChar(c);
-  	if (c != 1) {
-		// TODO!!
-		c = machine.translate(c);
-  		putchar(c);
-  		machine.advance();
-	}
+	while (c != EOF) {
+		#ifdef DEBUG
+		printf("processing input \'%c\'",c);
+		#endif
+		c = cleanChar(c);
+		#ifdef DEBUG
+		printf(", which was cleaned to \'%c\'\n", c);
+		#endif
+		if (c != '-') {
+			// TODO!!
+			c = machine.translate(c);
+			putchar(c);
+			machine.advance();
+		}
 	c = getchar();
-  }
+	}
 
+	fflush(stdout);
 	return 0;
 }

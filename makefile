@@ -23,7 +23,8 @@ BINDIR   = bin
 
 CC       = gcc
 # compiling flags here
-CFLAGS   = -std=c++11 -Wall -I $(INCDIR)
+CFLAGS   = -std=c++11 -Wall -I $(INCDIR) 
+#-DDEBUG
 
 LINKER   = gcc -o
 # linking flags here

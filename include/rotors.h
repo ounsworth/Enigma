@@ -12,7 +12,7 @@
 
 
 /**
- * Abstract class for an Enigma Rotor
+ * Abstract(ish) class for an Enigma Rotor
  */
 class Rotor
 {
@@ -20,13 +20,14 @@ public:
 	/** Construcors **/
 	Rotor(char pos);
 	Rotor() { Rotor(0); }
+	virtual ~Rotor() { }
 	
- 	void advance();
+ 	virtual void advance();
  	
- 	char translate(char c);	 	
+ 	char translate(char c); 	
  	char inv_translate(char c);
  	
- 	bool nextCanAdvance();
+ 	virtual bool nextCanAdvance();
  	
  	// should I also have translate(char* str) ?
  	
@@ -34,7 +35,6 @@ protected:
 	int m_pos;
 	char transitionTable[27];
 	char inv_transitionTable[27];
-
 };
 
 
@@ -85,8 +85,10 @@ class NullRotor : public Rotor
 			strcpy(inv_transitionTable, ALPHABET);
 		}
 	
-		void advance() { }
-	 	bool nextCanAdvance() { return false; }
+		~NullRotor() override { }
+		
+		void advance() override { }
+	 	bool nextCanAdvance() override { return false; }
 
 };
 
@@ -102,7 +104,9 @@ class RotorI : public Rotor
 			strcpy(inv_transitionTable,"UWYGADFPVZBECKMTHXSLRINQOJ");
 		}
 		
-	 	bool nextCanAdvance();
+		~RotorI() override { }
+		
+	 	bool nextCanAdvance() override;
 };
 
 
@@ -118,9 +122,11 @@ class RotorII : public Rotor
 			strcpy(inv_transitionTable, "AJPCZWRLFBDKOTYUQGENHXMIVS");
 		}
 		
-	 	bool nextCanAdvance();
+		~RotorII() override { }
+		
+	 	bool nextCanAdvance() override;
 
-};
+}; 
 
 
 /**
@@ -135,7 +141,9 @@ class RotorIII : public Rotor
 			strcpy(inv_transitionTable, "TAGBPCSDQEUFVNZHYIXJWLRKOM");
 		}
 		
-	 	bool nextCanAdvance();
+		~RotorIII() override { }
+		
+	 	bool nextCanAdvance() override;
 
 };
 
@@ -152,7 +160,9 @@ class RotorIV : public Rotor
 			strcpy(inv_transitionTable, "HZWVARTNLGUPXQCEJMBSKDYOIF");
 		}
 		
-	 	bool nextCanAdvance();
+		~RotorIV() override { }
+		
+	 	bool nextCanAdvance() override;
 
 };
 
@@ -169,7 +179,9 @@ class RotorV : public Rotor
 			strcpy(inv_transitionTable, "QCYLXWENFTZOSMVJUDKGIARPHB");
 		}
 		
-	 	bool nextCanAdvance();
+		~RotorV() override { }
+		
+	 	bool nextCanAdvance() override;
 };
 
 
@@ -185,7 +197,9 @@ class RotorVI : public Rotor
 			strcpy(inv_transitionTable, "SKXQLHCNWARVGMEBJPTYFDZUIO");
 		}
 		
-	 	bool nextCanAdvance();
+		~RotorVI() override { }
+		
+	 	bool nextCanAdvance() override;
 };
 
 
@@ -201,7 +215,9 @@ class RotorVII : public Rotor
 			strcpy(inv_transitionTable, "QMGYVPEDRCWTIANUXFKZOSLHJB");
 		}
 		
-	 	bool nextCanAdvance();
+		~RotorVII() override { }
+		
+	 	bool nextCanAdvance() override;
 };
 
 
@@ -217,7 +233,9 @@ class RotorVIII : public Rotor
 			strcpy(inv_transitionTable, "QJINSAYDVKBFRUHMCPLEWZTGXO");
 		}
 		
-	 	bool nextCanAdvance();
+		~RotorVIII() override { }
+		
+	 	bool nextCanAdvance() override;
 };
 
 
@@ -233,7 +251,9 @@ class RotorBeta : public Rotor
 			strcpy(inv_transitionTable, "RLFOBVUXHDSANGYKMPZQWEJICT");
 		}
 		
-	 	bool nextCanAdvance();
+		~RotorBeta() override { }
+		
+	 	bool nextCanAdvance() override;
 };
 
 
@@ -249,7 +269,9 @@ class RotorGamma : public Rotor
 			strcpy(inv_transitionTable, "ELPZHAXJNYDRKFCTSIBMGWQVOU");
 		}
 		
-	 	bool nextCanAdvance();
+		~RotorGamma() override { }
+		
+	 	bool nextCanAdvance() override;
 };
 
 
