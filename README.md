@@ -1,6 +1,8 @@
 # Enigma
 Enigma Machine Emulator C++
 
+**This project is incomplete. Running ciphertext back through a machine with the same settings does not give back the original plaintext. Clearly there are mistakes somewhere, but I'm going to leave this project for a bit, and maybe I'll come back to it in the future.**
+
 This project will emulate the World War 2 Enigma machine using authentic rotor and reflector configurations. 
 
 The plugboard configuration, number; types, and order of rotors; type of reflector, and initialization vector for rotor starting potisions will be configurable from command-line arguments, or .ini cofiguration file.
